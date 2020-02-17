@@ -66,8 +66,8 @@ var overlay = ml("div", { id: "overlay"},
 			console.log("closing the overlay")
 		    },
 		}, "X"),
-		ml("h3", {}, "The Overlay Title"),
-		ml("p", {}, "The purpose of this overlay"),
+		ml("h3", {}, "Sign up"),
+		ml("p", {}, "The coolest newsletter in town"),
 	    ]),
 	    ml("div", { class: "overlay__content"}, ["more content"]),
 	])
