@@ -103,3 +103,12 @@ Version 2 create an temporary virtual DOM that holds the resulting hierarchy.
 
 Then the `render(root, result)` function is called with the root element and the virtual DOM as parameters. What this allows is to create objects from parent to child, and allows for an `onCreate` event.
 
+``` JavaScript
+var title = ml("h1", {
+	id: "page-title",
+	class: "main-title",
+	onCreate: () => {
+		console.log("title created")
+	}, "Title");
+render(header, title);
+```
