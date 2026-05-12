@@ -8,16 +8,16 @@ Creating nested elements like the following can be tedious:
 ``` HTML
 <div id="overlay">
     <div class="overlay__inner">
-	<div class="overlay__box">
-	    <div class="overlay__hdr">
-		<span class="overlay__close-btn">X</span>
-		<h3>Sign up</h3>
-		<p>The coolest newsletter in town</p>
-	    </div>
-	    <div class="overlay__content">
-		...
-	    </div>
-	</div>
+		<div class="overlay__box">
+			<div class="overlay__hdr">
+			<span class="overlay__close-btn">X</span>
+			<h3>Sign up</h3>
+			<p>The coolest newsletter in town</p>
+			</div>
+			<div class="overlay__content">
+			...
+			</div>
+		</div>
     </div>
 </div>
 ```
@@ -55,60 +55,127 @@ Not only it is tedious, it is easy to introduce hard to debug errors.
 
 Here is how we can solve the same problem with JML:
 
-``` JavaScript
-var overlay = ml("div", { id: "overlay"},
-    ml("div", { class: "overlay__inner"},
-	ml("div", { class: "overlay__box"}, [
-	    ml("div", { class: "overlay__hdr"}, [
-		ml("span", {
-		    class: "overlay__close-btn",
-		    onClick: function() {
-			console.log("closing the overlay")
-		    },
-		}, "X"),
-		ml("h3", {}, "Sign up"),
-		ml("p", {}, "The coolest newsletter in town"),
-	    ]),
-	    ml("div", { class: "overlay__content"}, ["more content"]),
-	])
+```javascript
+const overlay = h("div", { id: "overlay"},
+    h("div", { class: "overlay__inner"},
+		h("div", { class: "overlay__box"}, [
+			h("div", { class: "overlay__hdr"}, [
+				h("span", {
+					class: "overlay__close-btn",
+					onClick: () => {
+						console.log("closing the overlay")
+					},
+				}, "X"),
+				h("h3", {}, "Sign up"),
+				h("p", {}, "The coolest newsletter in town"),
+			]),
+			h("div", { class: "overlay__content"}, ["more content"]),
+		])
     )
 );
-document.body.appendChild(overlay);
+render(document.body, overlay);
 ```
 
 A simple elegant solution that follows a similar hierarchy of the original HTML.
 
-There are two versions.
+## How It Works
 
-### Version 1 (jml_v1.js)
+JML creates a virtual DOM-like object structure that can be rendered into the actual DOM:
 
-Version 1 creates DOM elements from the furthest child up to the parent. Then it returns the parent the you can manually append the parent to any Node you like:
+```javascript
+const { h, render } = JML();
 
-``` JavaScript
-var title = ml("h1", { id: "page-title", class: "main-title",}, "Title");
-header.appendChild(title);
+// Create a virtual DOM object
+const title = h("h1", { 
+  id: "page-title", 
+  class: "main-title" 
+}, "Title");
+
+// Render it into the DOM
+render(document.getElementById('header'), title);
 ```
 
-### Version 2 (jml_v2.js)
+The `h()` function creates a plain JavaScript object:
 
-Version 2 create an temporary virtual DOM that holds the resulting hierarchy.
-
-``` JavaScript
+```javascript
 {
-	name: "name",		// string
-	props: Object,		// key value object
-	children: Object,	// string object or array
+  name: "h1",
+  props: { id: "page-title", class: "main-title" },
+  children: "Title"
 }
 ```
 
-Then the `render(root, result)` function is called with the root element and the virtual DOM as parameters. What this allows is to create objects from parent to child, and allows for an `onCreate` event.
+Then `render()` converts this object into an actual DOM element and appends it to the target.
 
-``` JavaScript
-var title = ml("h1", {
-	id: "page-title",
-	class: "main-title",
-	onCreate: () => {
-		console.log("title created")
-	}, "Title");
-render(header, title);
+## Features
+
+- **Simple API**: Just `h()` to create elements and `render()` to display them
+- **Declarative**: Write DOM structures as nested function calls
+- **Event handling**: Attach event listeners with the `on` prefix (e.g., `onClick`, `onChange`)
+- **Array support**: Pass arrays of classes or children elements
+- **SVG support**: Automatic SVG namespace handling when using `<svg>` tags
+- **Reactive components**: Use `createComponent()` for stateful, re-renderable components
+- **Zero dependencies**: Pure vanilla JavaScript
+
+## Examples
+
+### Creating a simple button
+
+```javascript
+const { h, render } = JML();
+
+const button = h('button', {
+  class: 'btn btn-primary',
+  onClick: () => console.log('Clicked!')
+}, 'Click me');
+
+render(document.body, button);
+```
+
+### Building a todo list
+
+```javascript
+const { h, render } = JML();
+
+const todos = ['Learn JML', 'Build a project', 'Share it'];
+const todoItems = todos.map(todo => 
+  h('li', { class: 'todo-item' }, todo)
+);
+
+const todoList = h('ul', { class: 'todo-list' }, todoItems);
+render(document.getElementById('app'), todoList);
+```
+
+### Dynamic class arrays
+
+```javascript
+const { h, render } = JML();
+
+const isActive = true;
+const button = h('button', {
+  class: ['btn', 'btn-primary', isActive ? 'active' : 'inactive']
+}, 'Submit');
+
+render(document.body, button);
+// Renders as: <button class="btn btn-primary active">Submit</button>
+```
+
+### Reactive component with state
+
+```javascript
+const { h, render, createComponent } = JML();
+
+const counter = createComponent({
+  initialState: { count: 0 },
+  render: (state, update) => {
+    return h('div', { class: 'counter' }, [
+      h('p', {}, `Count: ${state.count}`),
+      h('button', { 
+        onClick: () => update({ count: state.count + 1 })
+      }, 'Increment')
+    ]);
+  }
+});
+
+render(document.getElementById('app'), counter);
 ```
