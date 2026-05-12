@@ -4,11 +4,9 @@
   "description": "A JavaScript Markup Languange in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "node --test test.js"
+    "test": "node --test test/test.js"
   },
-  "devDependencies": {
-    "jsdom": "^23.0.0"
-  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ibudiallo/jml.git"

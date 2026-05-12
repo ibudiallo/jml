@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 //import { JSDOM } from 'jsdom';
 import DOM from "./dom.js";
-import JML from "./index.js";
+import JML from "../index.js";
 /*
 // Create a single JSDOM instance once for all tests
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
