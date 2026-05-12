@@ -1,0 +1,29 @@
+{
+  "name": "jml",
+  "version": "1.0.0",
+  "description": "A JavaScript Markup Languange in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^23.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibudiallo/jml.git"
+  },
+  "keywords": [
+    "jml",
+    "js",
+    "markup",
+    "jsx"
+  ],
+  "author": "Ibrahim Diallo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ibudiallo/jml/issues"
+  },
+  "homepage": "https://github.com/ibudiallo/jml#readme",
+  "type": "module"
+}

@@ -149,6 +149,7 @@ const JML = () => {
                 const newDom = renderComponentToDom(newVNode);
                 parentNode.replaceChild(newDom, domNode);
                 domNode = newDom;
+                return domNode;
             }
         };
 
