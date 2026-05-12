@@ -3,6 +3,8 @@ A JavaScript Markup Languange in JavaScript
 
 JML as described in [this article](https://idiallo.com/javascript/create-dom-elements-faster) makes it easier to create complex DOM hierarchies.
 
+It's less than 1KB (1019 B) minified gzip
+
 Creating nested elements like the following can be tedious:
 
 ``` HTML
