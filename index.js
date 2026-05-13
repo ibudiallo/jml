@@ -123,9 +123,10 @@ const JML = () => {
                     el.appendChild(createTextNode(v));
                 } else if (isJML(v)) {
                     render(el, v, isSVG);
-                } else {
+                } else if (isJMLMount(v)){
                     mountComponent(el, v);
                 }
+                // then it must be null, we can ignore it
             });
         } else if (isJML(n)) {
             render(el, n, isSVG);
